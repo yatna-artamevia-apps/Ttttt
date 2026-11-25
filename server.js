@@ -6,7 +6,21 @@ const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 const HOST = '0.0.0.0';
 
+const gameEntryPath = path.join(__dirname, 'm.5egytucuw.com', '74', 'index2eb4.html');
+
 app.use('/favicon', express.static(path.join(__dirname, 'm.5egytucuw.com', 'favicon')));
+app.use('/74/favicon', express.static(path.join(__dirname, 'm.5egytucuw.com', 'favicon')));
+
+app.get(['/74/index.html', '/74', '/74/'], (req, res) => {
+  return res.sendFile(gameEntryPath);
+});
+
+app.get('/m.5egytucuw.com/74/index2eb4.html', (req, res) => {
+  const qIdx = req.originalUrl.indexOf('?');
+  const qs = qIdx !== -1 ? req.originalUrl.slice(qIdx) : '';
+  return res.redirect(302, '/74/index.html' + qs);
+});
+
 app.use(express.static(__dirname));
 
 app.use('/__api_proxy', express.raw({ type: '*/*', limit: '2mb' }), async (req, res) => {
@@ -37,7 +51,6 @@ app.use('/__api_proxy', express.raw({ type: '*/*', limit: '2mb' }), async (req, 
 
 app.get('/', (req, res) => {
   const indexPath = path.join(__dirname, 'index.html');
-  const gameEntryPath = path.join(__dirname, 'm.5egytucuw.com', '74', 'index2eb4.html');
   if (fs.existsSync(indexPath)) {
     return res.sendFile(indexPath);
   }
