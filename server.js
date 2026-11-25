@@ -1,10 +1,12 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const { handleMockApi } = require('./mockPgApi');
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 const HOST = '0.0.0.0';
+const USE_UPSTREAM_PROXY = process.env.USE_UPSTREAM_PROXY === '1';
 
 const gameEntryPath = path.join(__dirname, 'm.5egytucuw.com', '74', 'index2eb4.html');
 
@@ -24,6 +26,9 @@ app.get('/m.5egytucuw.com/74/index2eb4.html', (req, res) => {
 app.use(express.static(__dirname));
 
 app.use('/__api_proxy', express.raw({ type: '*/*', limit: '2mb' }), async (req, res) => {
+  if (!USE_UPSTREAM_PROXY) {
+    return handleMockApi(req, res);
+  }
   try {
     const targetUrl = 'https://api.u45owu68o.com' + req.url;
     const forwardHeaders = {
