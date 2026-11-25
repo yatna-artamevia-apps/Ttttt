@@ -1,4 +1,5 @@
 const express = require('express');
+const fs = require('fs');
 const path = require('path');
 
 const app = express();
@@ -35,7 +36,12 @@ app.use('/__api_proxy', express.raw({ type: '*/*', limit: '2mb' }), async (req, 
 });
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  const indexPath = path.join(__dirname, 'index.html');
+  const gameEntryPath = path.join(__dirname, 'm.5egytucuw.com', '74', 'index2eb4.html');
+  if (fs.existsSync(indexPath)) {
+    return res.sendFile(indexPath);
+  }
+  return res.sendFile(gameEntryPath);
 });
 
 app.listen(PORT, HOST, () => {
