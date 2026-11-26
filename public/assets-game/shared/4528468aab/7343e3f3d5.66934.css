@@ -1,0 +1,84 @@
+
+.gh_theme_sprite {
+    display:inline-block;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-size: 442px 50px;
+    background-image: url(gh_theme_sprite.png);
+    
+}
+
+
+.gh_theme_sprite.gh_ic_copy {
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    min-height: 40px;
+    background-position: -401px -1px;
+}
+
+.gh_theme_sprite.gh_ic_mark_tick {
+    width: 48px;
+    min-width: 48px;
+    height: 48px;
+    min-height: 48px;
+    background-position: -1px -1px;
+}
+
+.gh_theme_sprite.gh_ic_nav_bonus_game {
+    width: 48px;
+    min-width: 48px;
+    height: 48px;
+    min-height: 48px;
+    background-position: -51px -1px;
+}
+
+.gh_theme_sprite.gh_ic_nav_collapse {
+    width: 48px;
+    min-width: 48px;
+    height: 48px;
+    min-height: 48px;
+    background-position: -101px -1px;
+}
+
+.gh_theme_sprite.gh_ic_nav_free_spin {
+    width: 48px;
+    min-width: 48px;
+    height: 48px;
+    min-height: 48px;
+    background-position: -151px -1px;
+}
+
+.gh_theme_sprite.gh_ic_nav_freehand {
+    width: 48px;
+    min-width: 48px;
+    height: 48px;
+    min-height: 48px;
+    background-position: -201px -1px;
+}
+
+.gh_theme_sprite.gh_ic_nav_gift {
+    width: 48px;
+    min-width: 48px;
+    height: 48px;
+    min-height: 48px;
+    background-position: -251px -1px;
+}
+
+.gh_theme_sprite.gh_ic_nav_jackpot {
+    width: 48px;
+    min-width: 48px;
+    height: 48px;
+    min-height: 48px;
+    background-position: -301px -1px;
+}
+
+.gh_theme_sprite.gh_ic_nav_super6 {
+    width: 48px;
+    min-width: 48px;
+    height: 48px;
+    min-height: 48px;
+    background-position: -351px -1px;
+}
+
+

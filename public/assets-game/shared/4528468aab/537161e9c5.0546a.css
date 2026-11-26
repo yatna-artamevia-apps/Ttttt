@@ -1,0 +1,28 @@
+
+.gh_vrf_sprite {
+    display:inline-block;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-size: 163px 233px;
+    background-image: url(gh_vrf_sprite.png);
+    
+}
+
+
+.gh_vrf_sprite.glow {
+    width: 161px;
+    min-width: 161px;
+    height: 192px;
+    min-height: 192px;
+    background-position: -1px -1px;
+}
+
+.gh_vrf_sprite.glow_horizontal {
+    width: 141px;
+    min-width: 141px;
+    height: 37px;
+    min-height: 37px;
+    background-position: -1px -195px;
+}
+
+
