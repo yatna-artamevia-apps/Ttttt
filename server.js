@@ -25,6 +25,19 @@ app.get('/m.5egytucuw.com/74/index2eb4.html', (req, res) => {
 
 app.use(express.static(__dirname));
 
+app.use('/__shared_proxy', express.raw({ type: '*/*', limit: '10mb' }), async (req, res) => {
+  try {
+    const targetUrl = 'https://static.5egytucuw.com' + req.url;
+    const upstream = await fetch(targetUrl);
+    const contentType = upstream.headers.get('content-type');
+    if (contentType) res.setHeader('Content-Type', contentType);
+    const buf = Buffer.from(await upstream.arrayBuffer());
+    res.status(upstream.status).send(buf);
+  } catch (err) {
+    res.status(502).json({ error: 'Shared proxy error' });
+  }
+});
+
 app.use('/__api_proxy', express.raw({ type: '*/*', limit: '2mb' }), async (req, res) => {
   if (!USE_UPSTREAM_PROXY) {
     return handleMockApi(req, res);
