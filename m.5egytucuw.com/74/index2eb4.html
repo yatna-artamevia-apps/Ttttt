@@ -33,10 +33,18 @@
     replaceState: function(s, t, u) { try { realWin.history.replaceState(s, t, u); } catch (e) {} }
   };
 
+  realWin.dataLayer = realWin.dataLayer || [];
+  if (typeof realWin.gtag !== "function") {
+    realWin.gtag = function() {};
+  }
+
   function rewriteApiUrl(u) {
     if (typeof u === "string") {
+      if (u.indexOf("//") === 0) {
+        u = "https:" + u;
+      }
       if (u.indexOf("https://static.5egytucuw.com/m.5egytucuw.com/74/") === 0) {
-        return "https://static.5egytucuw.com/74/" + u.slice("https://static.5egytucuw.com/m.5egytucuw.com/74/".length);
+        return "/__shared_proxy/74/" + u.slice("https://static.5egytucuw.com/m.5egytucuw.com/74/".length);
       }
       if (u.indexOf("https://static.5egytucuw.com/m.5egytucuw.com/") === 0) {
         return "/" + u.slice("https://static.5egytucuw.com/m.5egytucuw.com/".length);
@@ -44,14 +52,59 @@
       if (u.indexOf("https://static.5egytucuw.com/") === 0) {
         return "/__shared_proxy/" + u.slice("https://static.5egytucuw.com/".length);
       }
+      if (u.indexOf("https://m.5egytucuw.com/") === 0) {
+        return "/" + u.slice("https://m.5egytucuw.com/".length);
+      }
       if (u.indexOf("https://api.u45owu68o.com/") === 0) {
         return "/__api_proxy/" + u.slice("https://api.u45owu68o.com/".length);
       }
       if (u.indexOf("https://api.5egytucuw.com/") === 0) {
         return "/__api_proxy/" + u.slice("https://api.5egytucuw.com/".length);
       }
+      if (
+        u.indexOf("https://www.googletagmanager.com/") === 0 ||
+        u.indexOf("https://www.google-analytics.com/") === 0 ||
+        u.indexOf("https://analytics.google.com/") === 0
+      ) {
+        return "/__noop_analytics";
+      }
     }
     return u;
+  }
+
+  function patchProtoProp(Proto, prop) {
+    if (!Proto) return;
+    var desc = Object.getOwnPropertyDescriptor(Proto, prop);
+    if (desc && desc.set && desc.get && desc.configurable) {
+      Object.defineProperty(Proto, prop, {
+        configurable: true,
+        enumerable: desc.enumerable,
+        get: function() {
+          return desc.get.call(this);
+        },
+        set: function(val) {
+          return desc.set.call(this, rewriteApiUrl(val));
+        }
+      });
+    }
+  }
+
+  patchProtoProp(realWin.HTMLScriptElement && realWin.HTMLScriptElement.prototype, "src");
+  patchProtoProp(realWin.HTMLImageElement && realWin.HTMLImageElement.prototype, "src");
+  patchProtoProp(realWin.HTMLMediaElement && realWin.HTMLMediaElement.prototype, "src");
+  patchProtoProp(realWin.HTMLLinkElement && realWin.HTMLLinkElement.prototype, "href");
+
+  if (realWin.Element && realWin.Element.prototype && realWin.Element.prototype.setAttribute) {
+    var origSetAttribute = realWin.Element.prototype.setAttribute;
+    realWin.Element.prototype.setAttribute = function(name, value) {
+      if (typeof name === "string") {
+        var lower = name.toLowerCase();
+        if ((lower === "src" || lower === "href") && typeof value === "string") {
+          value = rewriteApiUrl(value);
+        }
+      }
+      return origSetAttribute.call(this, name, value);
+    };
   }
 
   if (realWin.XMLHttpRequest && realWin.XMLHttpRequest.prototype) {
